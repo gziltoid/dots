@@ -1,35 +1,46 @@
 #!/usr/bin/env python3
 from graphics import *
-from random import randint
-from math import sin, cos
+from random import randrange, uniform
+
 
 WIDTH, HEIGHT = 800, 600
 CIRCLE_RADIUS = 7
-SPEED = 10
 
 
 def main():
     win = GraphWin("Dots", WIDTH, HEIGHT)
     win.setBackground("black")
 
-    message = Text(Point(win.getWidth() / 2, 20), "Press any key to quit.")
+    message = Text(Point(win.getWidth() / 2, 20), "Click anywhere to quit.")
     message.setTextColor("pink")
     message.setSize(18)
     message.draw(win)
 
-    x0, y0 = randint(6, WIDTH - 1 - CIRCLE_RADIUS), randint(6,
-                                                            HEIGHT - 1 - CIRCLE_RADIUS)
+    x0, y0 = randrange(WIDTH), randrange(HEIGHT)
     c = Circle(Point(x0, y0), CIRCLE_RADIUS)
     c.setFill("white")
     c.draw(win)
 
-    x, y = randint(-3, 3), randint(-3, 3)
+    dx, dy = uniform(-3.0, 3.0), uniform(-3.0, 3.0)
 
-    while not win.checkKey():
-        c.move(x, y)
-        time.sleep(.03)
+    while True:
+        c.undraw()
+        centerPoint = c.getCenter()
+        curr_x, curr_y = centerPoint.x, centerPoint.y
 
-    win.close()
+        x = (curr_x + dx) % WIDTH
+        y = (curr_y + dy) % HEIGHT
+
+        c = Circle(Point(x, y), CIRCLE_RADIUS)
+        c.setFill("white")
+        c.draw(win)
+
+        time.sleep(0.015)
+
+        if win.checkMouse():
+            win.close()
+            break
 
 
-main()
+if __name__ == "__main__":
+    main()
