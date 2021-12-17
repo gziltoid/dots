@@ -2,6 +2,9 @@
 from math import cos, pi, sin
 from graphics import *
 from random import randrange, uniform
+import argparse
+from PIL import Image
+import subprocess
 
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
@@ -9,8 +12,6 @@ CIRCLE_RADIUS = 6
 CIRCLES_NUMBER = 80
 CIRCLE_SPEED = 0.5
 DISTANCE_LIMIT = 80
-
-img_list = []
 
 
 def main():
@@ -30,7 +31,6 @@ def main():
 
     circles = []
     lines = []
-    n = 0
 
     for _ in range(CIRCLES_NUMBER):
         x0, y0 = randrange(SCREEN_WIDTH), randrange(SCREEN_HEIGHT)
@@ -76,28 +76,34 @@ def main():
 
         update(30)
 
-        # save the current TKinter object to postscript format
-        win.postscript(file=f"{n}.eps", colormode='color')
-        n += 1
-
-    save_as_gif(n)
+        yield win
 
 
 def save_as_gif(n):
     '''Convert from eps to gif format using PIL'''
-    from PIL import Image
-    import subprocess
-
     images = []
     for i in range(n):
         im = Image.open(f'{i}.eps')
         im.save(f'{i}.png')
         images.append(im)
-
-    images[0].save('dots.gif', save_all=True, append_images=images[1:], loop=0)
-
-    subprocess.call(' '.join(['rm', './*.png', './*.eps']), shell=True)
+    images[0].save('dots.gif', save_all=True,
+                   append_images=images[1:], loop=0)
+    subprocess.call(' '.join(['rm', './*.eps', ' ./*.png']), shell=True)
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(
+        description='Cicles and lines visualization.')
+    parser.add_argument('--gif', action='store_true', help='save as gif')
+    args = parser.parse_args()
+    print(args)
+    if not args.gif:
+        for _ in main():
+            pass
+    else:
+        n = 0
+        for win in main():
+            # save the current TKinter object to postscript format
+            win.postscript(file=f"{n}.eps", colormode='color')
+            n += 1
+        save_as_gif(n)
