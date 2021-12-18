@@ -79,7 +79,7 @@ def get_distance(p1, p2):
 
 
 def draw(win, dots, lines):
-    # connect dots with a certain distance
+    # connect dots within a given distance from each other
     for i, d1 in enumerate(dots):
         p1 = d1.dot.getCenter()
         for d2 in dots[i + 1:]:
@@ -121,6 +121,7 @@ def save_as_gif(n):
         img = Image.open(f'{i}.eps')
         img.save(f'{i}.png')
         images.append(img)
+    
     images[0].save('dots.gif', save_all=True,
                    append_images=images[1:], loop=0)
     subprocess.call(' '.join(['rm', './*.eps', ' ./*.png']), shell=True)
@@ -138,7 +139,7 @@ if __name__ == '__main__':
     else:
         n = 0
         for win in main():
-            # save the current TKinter object to postscript format
             win.postscript(file=f"{n}.eps", colormode='color')
             n += 1
+        
         save_as_gif(n)
