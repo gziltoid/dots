@@ -1,8 +1,9 @@
 # Connecting Dots and Lines Visualization
 
-Implemented a simple visualization using the package [graphics.py](https://mcsp.wartburg.edu/zelle/python/) by John Zelle.  
+Implemented a simple visualization using the package [graphics.py](https://mcsp.wartburg.edu/zelle/python/) by John Zelle. Inspired by the background on [The Developer Society](https://www.dev.ngo/) and other websites.
 
-![dots6](https://user-images.githubusercontent.com/38230817/146657448-b8f7afe9-0b7e-4ecc-a59c-1328a1632d3f.gif)  
+![dots__](https://user-images.githubusercontent.com/38230817/146657822-9fbda9a4-ede1-4e38-a6e9-25504745fb5a.gif) 
+ 
 To run the animation just run a Python script:  
 `$ ./dots.py`  
 
